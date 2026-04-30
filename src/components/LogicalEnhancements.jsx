@@ -184,9 +184,8 @@ const EnhancedSkillBar = ({ skill, index }) => {
           background: colors.bg,
           borderRadius: '2px',
           width: isVisible ? `${skill.level}%` : '0%',
-          transition: `width 1s cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms`,
           boxShadow: isHovered ? `0 0 12px ${colors.glow}40` : 'none',
-          transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease-out'
+          transition: 'box-shadow 0.3s ease-out, width 1s cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms'
         }} />
       </div>
     </div>
@@ -224,7 +223,6 @@ const InteractiveProjectCard = ({ project, index }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       style={{
-        padding: '40px 0',
         borderTop: '1px solid rgba(0,0,0,0.08)',
         display: 'grid',
         gridTemplateColumns: '1fr 3fr 2fr',
@@ -233,7 +231,6 @@ const InteractiveProjectCard = ({ project, index }) => {
         cursor: 'pointer',
         background: isHovered ? '#f0ede8' : 'transparent',
         margin: '0 -clamp(24px,5vw,80px)',
-        padding: '40px clamp(24px,5vw,80px)',
         transition: 'all 0.3s ease-out',
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transformStyle: 'preserve-3d'

@@ -264,10 +264,9 @@ function TransitionOverlay({ active, fromLogical }) {
     }}>
       {/* Full screen overlay with fade */}
       <div style={{
-        position: "absolute", inset: 0,
+        position: "absolute", inset: 0, width: "100%", height: "100%",
         background: bgColor,
         opacity: phase === 1 ? 1 : (phase === 2 ? 1 : 0),
-        transition: "opacity 0.5s ease-in-out",
         transform: `scale(${scale})`,
         transition: "opacity 0.5s ease-in-out, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)",
       }} />
