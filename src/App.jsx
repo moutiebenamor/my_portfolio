@@ -5,7 +5,7 @@ import PageTransition from "./components/PageTransition";
 import Scroll3D from "./components/Scroll3D";
 import LoadingScreen from "./components/LoadingScreen";
 import SkeletonLoader from "./components/SkeletonLoader";
-import { FloatingShapes, AnimatedText, EnhancedSkillBar, InteractiveProjectCard, ScrollProgress } from "./components/LogicalEnhancements";
+import { FloatingShapes, AnimatedText, EnhancedSkillBar, InteractiveProjectCard, ProjectModal, ScrollProgress } from "./components/LogicalEnhancements";
 
 // ─── ICONS ────────────────────────────────────────────────────────────────
 const GithubIcon = ({ size = 24 }) => (
@@ -355,6 +355,7 @@ function LogicalMode({ onToggle, contentLoading = false }) {
   const [activeSection, setActiveSection] = useState("hero");
   const [hoveredProject, setHoveredProject] = useState(null);
   const [animatedSkills, setAnimatedSkills] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimatedSkills(true), 600);
@@ -507,7 +508,7 @@ function LogicalMode({ onToggle, contentLoading = false }) {
             <SkeletonLoader type="project" count={PROJECTS_DATA.length} isLoading={true} />
           ) : (
             PROJECTS_DATA.map((p, i) => (
-              <InteractiveProjectCard key={p.title} project={p} index={i} />
+              <InteractiveProjectCard key={p.title} project={p} index={i} onProjectClick={setSelectedProject} />
             ))
           )}
         </div>
@@ -552,6 +553,9 @@ function LogicalMode({ onToggle, contentLoading = false }) {
           </a>
         </div>
       </section>
+
+      {/* Project Detail Modal */}
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
 
       <style>{`
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }

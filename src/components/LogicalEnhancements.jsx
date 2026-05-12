@@ -192,8 +192,173 @@ const EnhancedSkillBar = ({ skill, index }) => {
   );
 };
 
+// Project detail modal
+const ProjectModal = ({ project, onClose }) => {
+  if (!project) return null;
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(0,0,0,0.5)',
+        backdropFilter: 'blur(8px)',
+        animation: 'modalFadeIn 0.3s ease-out',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#faf9f7',
+          borderRadius: '16px',
+          padding: 'clamp(24px, 4vw, 48px)',
+          maxWidth: '520px',
+          width: '90%',
+          position: 'relative',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.2)',
+          animation: 'modalSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            background: 'none',
+            border: 'none',
+            fontSize: '20px',
+            cursor: 'pointer',
+            color: '#aaa',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => { e.target.style.background = 'rgba(0,0,0,0.06)'; e.target.style.color = '#1a1a1a'; }}
+          onMouseLeave={e => { e.target.style.background = 'none'; e.target.style.color = '#aaa'; }}
+        >
+          ✕
+        </button>
+
+        {/* Color accent bar */}
+        <div style={{
+          width: '40px',
+          height: '4px',
+          borderRadius: '2px',
+          background: project.color,
+          marginBottom: '24px',
+        }} />
+
+        {/* Title */}
+        <h3 style={{
+          fontSize: 'clamp(22px, 3vw, 28px)',
+          fontWeight: '600',
+          color: '#1a1a1a',
+          margin: '0 0 8px',
+          fontFamily: "'Georgia', serif",
+        }}>
+          {project.title}
+        </h3>
+
+        {/* Type & Year */}
+        <div style={{
+          fontSize: '13px',
+          color: '#999',
+          fontFamily: 'monospace',
+          letterSpacing: '0.05em',
+          marginBottom: '20px',
+        }}>
+          {project.type} · {project.year}
+        </div>
+
+        {/* Description */}
+        <p style={{
+          fontSize: '15px',
+          lineHeight: '1.7',
+          color: '#555',
+          margin: '0 0 24px',
+          fontFamily: "'Helvetica Neue', sans-serif",
+          fontWeight: 300,
+        }}>
+          {project.desc}
+        </p>
+
+        {/* Tags */}
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
+          {project.tags.map(t => (
+            <span key={t} style={{
+              fontSize: '11px',
+              padding: '4px 12px',
+              letterSpacing: '0.1em',
+              border: `1px solid ${project.color}40`,
+              color: project.color,
+              background: `${project.color}10`,
+              borderRadius: '16px',
+            }}>
+              {t}
+            </span>
+          ))}
+        </div>
+
+        {/* GitHub Link Button */}
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: '#1a1a1a',
+              color: '#f8f7f5',
+              padding: '12px 28px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease-out',
+              fontFamily: 'sans-serif',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = project.color; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 8px 24px ${project.color}40`; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#1a1a1a'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+            View on GitHub
+          </a>
+        )}
+      </div>
+
+      {/* Modal animations */}
+      <style>{`
+        @keyframes modalFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes modalSlideUp {
+          from { opacity: 0; transform: translateY(30px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // Interactive project cards with 3D tilt effect
-const InteractiveProjectCard = ({ project, index }) => {
+const InteractiveProjectCard = ({ project, index, onProjectClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
@@ -222,6 +387,7 @@ const InteractiveProjectCard = ({ project, index }) => {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
+      onClick={() => onProjectClick && onProjectClick(project)}
       style={{
         borderTop: '1px solid rgba(0,0,0,0.08)',
         display: 'grid',
@@ -230,7 +396,7 @@ const InteractiveProjectCard = ({ project, index }) => {
         alignItems: 'start',
         cursor: 'pointer',
         background: isHovered ? '#f0ede8' : 'transparent',
-        margin: '0 -clamp(24px,5vw,80px)',
+        padding: '28px clamp(24px,5vw,80px)',
         transition: 'all 0.3s ease-out',
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transformStyle: 'preserve-3d'
@@ -247,14 +413,6 @@ const InteractiveProjectCard = ({ project, index }) => {
         }}>
           {project.title}
         </h3>
-        <p style={{
-          fontSize: '16px',
-          lineHeight: '1.6',
-          color: '#666',
-          marginBottom: '16px'
-        }}>
-          {project.description}
-        </p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {project.tags.map(t => (
             <span key={t} style={{
@@ -340,5 +498,6 @@ export {
   AnimatedText,
   EnhancedSkillBar,
   InteractiveProjectCard,
+  ProjectModal,
   ScrollProgress
 };
