@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moutiebenamor.github.io/my_portfolio/sitemap.xml
